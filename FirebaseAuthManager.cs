@@ -112,13 +112,16 @@ public class FirebaseAuthManager : MonoBehaviour
                 UnityEngine.SceneManagement.SceneManager.LoadScene("LoginScene");
                 UIManager.Instance.OpenLoginPanel();
                 ClearLoginInputFieldText();
+                ClearRegisterInputFieldText();
             }
             
             user = auth.CurrentUser;
 
             if (signedIn)
             {
-                Debug.Log("Sigend in " + user.UserId);
+                string successMessage = "Signed in";
+                Debug.Log("Signed in " + user.UserId);
+                UIManager.Instance.ShowDebugLogLogin(false, null, successMessage);
             }
         }
     }
@@ -127,6 +130,14 @@ public class FirebaseAuthManager : MonoBehaviour
     {
         emailLoginField.text = "";
         passwordLoginField.text = "";
+    }
+
+    private void ClearRegisterInputFieldText()
+    {
+        nameRegisterFiled.text = "";
+        emailRegisterFiled.text = "";
+        passwordRegisterFiled.text = "";
+        confirmPasswordRegisterFiled.text = "";
     }
 
     public void Logout()
@@ -167,10 +178,10 @@ public class FirebaseAuthManager : MonoBehaviour
                     failedMessage += "Wrong Password";
                     break;
                 case AuthError.MissingEmail:
-                    failedMessage += "Wrong Password";
+                    failedMessage += "Missing Email";
                     break;
                 case AuthError.MissingPassword:
-                    failedMessage += "Wrong Password";
+                    failedMessage += "Missing Password";
                     break;
                 default:
                     failedMessage = "Login Failed";
@@ -178,6 +189,7 @@ public class FirebaseAuthManager : MonoBehaviour
             }
 
             Debug.Log(failedMessage);
+            UIManager.Instance.ShowDebugLogLogin(true, failedMessage, null);
         }
         else 
         {

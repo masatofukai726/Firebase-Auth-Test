@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private GameObject loginPanel;
+    public Text warningLoginText;
+    public Text confirmLoginText;
 
     [SerializeField]
     private GameObject registrationPanel;
@@ -42,6 +44,19 @@ public class UIManager : MonoBehaviour
         loginPanel.SetActive(false);
         registrationPanel.SetActive(true);
         emailVerificationPanel.SetActive(false);
+    }
+
+    public void ShowDebugLogLogin(bool isWarningLogin, string warningMessage, string confirmMessage)
+    {
+        if(isWarningLogin)
+        {
+            warningLoginText.text = $"{warningMessage}";
+        }
+        else
+        {
+            confirmLoginText.text = $"{confirmMessage}";
+        }
+
     }
 
     public void ShowVerificationResponse(bool isEmailSent, string emailId, string errorMessage)
