@@ -119,9 +119,9 @@ public class FirebaseAuthManager : MonoBehaviour
 
             if (signedIn)
             {
-                string successMessage = "Signed in";
+                string successLoginMessage = "Signed in";
                 Debug.Log("Signed in " + user.UserId);
-                UIManager.Instance.ShowDebugLogLogin(false, null, successMessage);
+                UIManager.Instance.ShowDebugLogLogin(false, null, successLoginMessage);
             }
         }
     }
@@ -211,6 +211,7 @@ public class FirebaseAuthManager : MonoBehaviour
 
     public void Register()
     {
+        UIManager.Instance.ClearLogText(); // エラーログの削除
         StartCoroutine(RegisterAsync(nameRegisterFiled.text, emailRegisterFiled.text, passwordRegisterFiled.text, confirmPasswordRegisterFiled.text));
     }
 
@@ -218,15 +219,21 @@ public class FirebaseAuthManager : MonoBehaviour
     {
         if (name == "")
         {
-            Debug.LogError("User Name is empty");
+            Debug.LogError("User Name field is empty");
+            string EmptyMessage = "User Name field is empty";
+            UIManager.Instance.ShowErrorLogRegist(EmptyMessage); // エラーログの表示
         }
         else if (email == "")
         {
             Debug.LogError("email field is empty");
+            string EmptyMessage = "Email field is empty";
+            UIManager.Instance.ShowErrorLogRegist(EmptyMessage); // エラーログの表示
         }
         else if (passwordRegisterFiled.text != confirmPasswordRegisterFiled.text)
         {
             Debug.LogError("Password does not match");
+            string RegistErrorMessage = "Password does not match";
+            UIManager.Instance.ShowErrorLogRegist(RegistErrorMessage); // エラーログの表示
         }
         else 
         {
@@ -262,6 +269,7 @@ public class FirebaseAuthManager : MonoBehaviour
                 }
 
                 Debug.Log(failedMessage);
+                UIManager.Instance.ShowDebugLogRegist(true, failedMessage, null); // エラーログの表示
             }
             else
             {
@@ -304,8 +312,10 @@ public class FirebaseAuthManager : MonoBehaviour
                             failedMessage = "Registration Failed";
                             break;  
                     }
-
+                    
                     Debug.Log("Registration Sucessful Welcome " + user.DisplayName);
+                    string successRegistMessage = "Registration Sucessful";
+                    UIManager.Instance.ShowDebugLogRegist(false, null, successRegistMessage); // エラーログの表示
                     if(user.IsEmailVerified)
                     {
                         UIManager.Instance.OpenLoginPanel();

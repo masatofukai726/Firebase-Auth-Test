@@ -14,6 +14,9 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private GameObject registrationPanel;
+    public Text ErrorRegistText; // エラーログテキストの設定
+    public Text warningRegistText; // エラーログテキストの設定
+    public Text confirmRegistText; // エラーログテキストの設定
 
     [SerializeField]
     private GameObject emailVerificationPanel;
@@ -32,8 +35,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ClearLogText() // エラーログの削除関数
+    {
+        warningLoginText.text = $"";
+        confirmLoginText.text = $"";
+        ErrorRegistText.text = $"";
+        warningRegistText.text = $"";
+        confirmRegistText.text = $"";
+        emailVerificationText.text = $"";
+        emailVerificationText.text = $"";
+    }
+
     public void OpenLoginPanel()
     {
+        ClearLogText(); // ログイン画面遷移時にエラーログの削除
         loginPanel.SetActive(true);
         registrationPanel.SetActive(false);
         emailVerificationPanel.SetActive(false);
@@ -46,7 +61,7 @@ public class UIManager : MonoBehaviour
         emailVerificationPanel.SetActive(false);
     }
 
-    public void ShowDebugLogLogin(bool isWarningLogin, string warningMessage, string confirmMessage)
+    public void ShowDebugLogLogin(bool isWarningLogin, string warningMessage, string confirmMessage) // エラーログの表示関数
     {
         if(isWarningLogin)
         {
@@ -55,6 +70,24 @@ public class UIManager : MonoBehaviour
         else
         {
             confirmLoginText.text = $"{confirmMessage}";
+        }
+
+    }
+
+    public void ShowErrorLogRegist(string ErrorRegistMessage) // エラーログの表示関数
+    {
+        ErrorRegistText.text = $"{ErrorRegistMessage}";
+    }
+
+    public void ShowDebugLogRegist(bool isWarningRegist, string warningMessage, string confirmMessage) // エラーログの表示関数
+    {
+        if(isWarningRegist)
+        {
+            warningRegistText.text = $"{warningMessage}";
+        }
+        else
+        {
+            confirmRegistText.text = $"{confirmMessage}";
         }
 
     }
@@ -72,7 +105,6 @@ public class UIManager : MonoBehaviour
         else
         {
             emailVerificationText.text = $"Couldn't sent email : {errorMessage}";
-
         }
     }
 }
